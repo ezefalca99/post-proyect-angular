@@ -23,9 +23,8 @@ export class FormularioLoginComponent implements OnInit {
   }
 
   public login(form){
-
-    console.log(form);
     if (form.valid){
+    
       this.tokensService.login(form.value.usernameOrEmail, form.value.password).subscribe(
         () => this.router.navigate(['']),
         errors => console.log(errors)

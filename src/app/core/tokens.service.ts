@@ -12,7 +12,7 @@ export class TokensService {
   }
 
   login(usernameOrPassword: string, password: string): Observable<any> {
-    return this.httpService.login(usernameOrPassword, password, TokensService.END_POINT);
+    return this.httpService.successful("Logueado correctamente!").login(usernameOrPassword, password, TokensService.END_POINT);
   }
 
   logout(): void {
@@ -20,18 +20,11 @@ export class TokensService {
   }
 
   isAdmin(): boolean {
-    return this.httpService.getToken() ? this.httpService.getToken().roles.includes(Role.ADMIN) : false;
+    return this.httpService.getToken() ? this.httpService.getToken().roles.includes(Role.ROLE_ADMIN) : false;
   }
 
-  isManager(): boolean {
-    return this.httpService.getToken() ? this.httpService.getToken().roles.includes(Role.MANAGER) : false;
-  }
 
-  isOperator(): boolean {
-    return this.httpService.getToken() ? this.httpService.getToken().roles.includes(Role.OPERATOR) : false;
-  }
-
-  getMobile(): string {
+  getUsername(): string {
     return this.httpService.getToken() ? this.httpService.getToken().user : undefined;
   }
 

@@ -37,17 +37,16 @@ export class HttpService {
     this.loginDto.usernameOrEmail = usernameOrEmail;
     this.loginDto.password = password;
 
-    console.log(endPoint);
-
-
     return this.post(endPoint, this.loginDto).pipe(
       map(token => {
+        console.log(token);
         this.token = token;
-        //this.token.user = new JwtHelperService().decodeToken(token.accessToken).user;
-        //this.token.name = new JwtHelperService().decodeToken(token.token).name;
-        //this.token.roles = new JwtHelperService().decodeToken(token.token).roles;
+        this.token.user = new JwtHelperService().decodeToken(token.accessToken).user;
+        this.token.name = new JwtHelperService().decodeToken(token.accessToken).name;
+        this.token.roles = new JwtHelperService().decodeToken(token.accessToken).roles;
+        console.log(this.token);
       }), catchError(error => {
-        console.log(error);
+       
         return this.handleError(error);
       })
     );
@@ -185,6 +184,7 @@ export class HttpService {
 
 
   private handleError(response): any {
+   console.log(response);
     let error: Error;
     if (response.status === HttpService.UNAUTHORIZED) {
       this.snackBar.open('Unauthorized', 'Error', {

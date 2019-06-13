@@ -3,19 +3,21 @@
   <legend class="text-dark text-center py-2 h1">LOGIN</legend>
   
   <div class="form-group">
-    <label for="usernameOrEmail">Username or Email</label>
+    <label for="usernameOrEmail">Usuario o Email</label>
     <input type="text" class="form-control" id="usernameOrEmail"
-      placeholder="Username/Email" formControlName="usernameOrEmail">
-      <div class="alert alert-danger" *ngIf="loginForm.controls['usernameOrEmail'].errors?.required">
-        Username o Email requerido
+      placeholder="Usuario/Email" formControlName="usernameOrEmail">
+      <div class="alert alert-danger" *ngIf="loginForm.controls['usernameOrEmail'].errors?.required &&
+       (loginForm.controls['usernameOrEmail'].touched || formTouched)">
+        Usuario o Email requerido
       </div>
  </div>
   <div class="form-group">
-    <label for="password">Password</label>
+    <label for="password">Contraseña</label>
     <input type="password" class="form-control" id="password"
      placeholder="Password" formControlName="password">
-    <div class="alert alert-danger" *ngIf="loginForm.controls['password'].errors?.required">
-      Password requerido
+    <div class="alert alert-danger" *ngIf="loginForm.controls['password'].errors?.required &&
+       (loginForm.controls['password'].touched || formTouched)">
+      Contraseña requerida
     </div>
   </div>
 

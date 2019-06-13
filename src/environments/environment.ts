@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   //VERSION: require('../../package.json').version,
-  API: 'https://client-spring5-rexuz.herokuapp.com/api/'
+  //API: 'https://client-spring5-rexuz.herokuapp.com/api/'
+  API: 'http://localhost:8080/api/'
 };
 
 /*
