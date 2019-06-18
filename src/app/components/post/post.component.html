@@ -1,11 +1,38 @@
 <div class="container">
   <div class="row">
     <div class="col-12 my-3">
-      <app-formulario-post></app-formulario-post>
+      <form novalidate [formGroup]="postForm" (ngSubmit)="savePost(postForm)">
+        <div class="form-group">
+          <legend class="text-center h1">Escribir Post</legend>
+          <textarea formControlName="description" class="form-control" id="description" rows="3" maxlength="240"></textarea>
+          <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.required">
+            Ingrese primero algo
+          </div>
+          <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.minlength">
+            Minimo 10 caracteres
+          </div>
+          <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.maxlength">
+            Maximo 240 caracteres
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Enviar</button>
+      </form>
       
     </div>
     <div class="col-12">
-      <app-listado-post></app-listado-post>
+      <div class="container" *ngIf="posts">
+        <div *ngFor="let post of posts" class="card my-2">
+          <div class="card-header">
+            {{post.userProfile.username}}
+          </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>{{post.description}}</p>
+              <footer class="blockquote-footer">{{post.createdAt}}</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
     </div>
   </div>  
 </div>

@@ -12,8 +12,7 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HomeComponent } from './layout/home/home.component';
 import { PostComponent } from './components/post/post.component';
-import { ListadoPostComponent } from './components/post/listado-post/listado-post.component';
-import { FormularioPostComponent } from './components/post/formulario-post/formulario-post.component';
+
 import { LoginComponent } from './components/login/login.component';
 import { FormularioLoginComponent } from './components/login/formulario-login/formulario-login.component';
 
@@ -24,8 +23,6 @@ import { FormularioLoginComponent } from './components/login/formulario-login/fo
     FooterComponent,
     HomeComponent,
     PostComponent,
-    ListadoPostComponent,
-    FormularioPostComponent,
     LoginComponent,
     FormularioLoginComponent
   ],
