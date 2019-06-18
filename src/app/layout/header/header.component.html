@@ -8,19 +8,33 @@
       
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/">Home</a>
           </li>
-          <li class="nav-item dropdown">
+          <li *ngIf="!authService.logIn()" class="nav-item">
+            <a class="nav-link" routerLink="login">Login</a>
+          </li>
+          <li *ngIf="authService.logIn()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Posts
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" routerLink="/clientes">Ver Listado</a>
-              <a class="dropdown-item" routerLink="/clientes/nuevo">Crear Nuevo</a>
+              <a class="dropdown-item" routerLink="posts">Ver Todos</a>
+              
             </div>
           </li>
+          <li *ngIf="authService.logIn()" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Bienvenido {{authService.getUsername()}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="user">
+              <a class="dropdown-item" routerLink="/posts">Ver Perfil</a>
+              <a class="dropdown-item" (click)="authService.logout()">Salir</a>
+            </div>
+          </li>
+
       
         </ul>
       

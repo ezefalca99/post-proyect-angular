@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TokensService } from 'src/app/core/tokens.service';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import { map, filter } from 'rxjs/operators'
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(public authService: TokensService, private router: Router) {
+  
   }
+/*
+  ngOnInit() {
+    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe(x => {
+      this.isAuth = this.authService.logIn();
+      this.username = this.authService.getUsername();
+    });
+  }
+
+  logOut(){
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
+*/
+  ngOnInit() {
+
+  }
+  
 
 }

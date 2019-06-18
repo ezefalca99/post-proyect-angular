@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 
 import {HttpService} from './http.service';
 import {Role} from './role.model';
+import { Token } from './token.model';
 
 @Injectable()
 export class TokensService {
@@ -19,16 +20,20 @@ export class TokensService {
     this.httpService.logout();
   }
 
-  isAdmin(): boolean {
-    return this.httpService.getToken() ? this.httpService.getToken().roles.includes(Role.ROLE_ADMIN) : false;
+  logIn(): boolean {
+    return this.httpService.loggedIn;
   }
 
+  isAdmin(): boolean {
+    return this.httpService.token ? this.httpService.token.roles.includes(Role.ROLE_ADMIN) : false;
+  }
 
   getUsername(): string {
-    return this.httpService.getToken() ? this.httpService.getToken().user : undefined;
+    return this.httpService.token ? this.httpService.token.user : undefined;
   }
 
   getName(): string {
-    return this.httpService.getToken() ? this.httpService.getToken().name : '???';
+    return this.httpService.token ? this.httpService.token.name : '???';
   }
+
 }

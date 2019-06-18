@@ -1,3 +1,16 @@
-<p>
-  formulario-post works!
-</p>
+<form novalidate [formGroup]="postForm" (ngSubmit)="savePost(postForm)">
+  <div class="form-group">
+    <legend class="text-center h1">Escribir Post</legend>
+    <textarea formControlName="description" class="form-control" id="description" rows="3" maxlength="240"></textarea>
+    <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.required">
+      Ingrese primero algo
+    </div>
+    <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.minlength">
+      Minimo 10 caracteres
+    </div>
+    <div class="alert alert-danger" *ngIf="postForm.controls['description'].errors?.maxlength">
+      Maximo 240 caracteres
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success btn-block">Enviar</button>
+</form>

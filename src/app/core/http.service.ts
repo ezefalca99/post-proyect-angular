@@ -1,16 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
-import {JwtHelperService} from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-import {environment} from '../../environments/environment';
-import {Token} from './token.model';
-import {Error} from './error.model';
-import { LoginDto } from './logindto.model';
+import { environment } from '../../environments/environment';
+import { Token } from './token.model';
+import { Error } from './error.model';
 
 @Injectable()
 export class HttpService {
@@ -18,49 +17,71 @@ export class HttpService {
   static UNAUTHORIZED = 401;
   static NOT_FOUND = 404;
 
-  private token: Token;
   private headers: HttpHeaders;
   private params: HttpParams;
   private responseType: string;
   private successfulNotification = undefined;
   private printDirectly: boolean;
-  private loginDto: LoginDto = new LoginDto();
 
-
+  loggedIn = false;
+  isAdmin = false;
+  token: Token = new Token();
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) {
     this.resetOptions();
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.decodeToken(token);
+    }
+  }
+
+  private decodeToken(token) {
+    try {
+      this.loggedIn = true;
+      this.token = { accessToken: token, user: null, name: null, roles: null };
+      this.token.user = new JwtHelperService().decodeToken(this.token.accessToken).user;
+      this.token.name = new JwtHelperService().decodeToken(this.token.accessToken).name;
+      this.token.roles = new JwtHelperService().decodeToken(this.token.accessToken).roles;
+    } catch (error) {
+      this.loggedIn = false;
+      this.token = { accessToken: null, user: null, name: null, roles: null };
+    }
+
   }
 
   login(usernameOrEmail: string, password: string, endPoint: string): Observable<any> {
-    
-    this.loginDto.usernameOrEmail = usernameOrEmail;
-    this.loginDto.password = password;
 
-    return this.post(endPoint, this.loginDto).pipe(
+    return this.post(endPoint, { usernameOrEmail: usernameOrEmail, password: password }).pipe(
       map(token => {
-        console.log(token);
-        this.token = token;
-        this.token.user = new JwtHelperService().decodeToken(token.accessToken).user;
-        this.token.name = new JwtHelperService().decodeToken(token.accessToken).name;
-        this.token.roles = new JwtHelperService().decodeToken(token.accessToken).roles;
-        console.log(this.token);
+        localStorage.setItem("token", token.accessToken);
+        this.decodeToken(token.accessToken);
+
       }), catchError(error => {
-       
         return this.handleError(error);
       })
     );
   }
 
   logout(): void {
-    this.token = undefined;
+    localStorage.removeItem("token");
+    this.loggedIn = false;
+    this.isAdmin = false;
+    this.token = new Token();
     this.router.navigate(['']);
+    
   }
 
+  /*
+    public get logIn(): boolean {
+      try {  
+        return (localStorage.getItem('token') !== null && !new JwtHelperService().isTokenExpired(localStorage.getItem('token')));
+  
+      } catch (error) {
+        return false;
+      }
+    }
+  */
 
-  getToken(): Token {
-    return this.token;
-  }
 
   param(key: string, value: string): HttpService {
     this.params = this.params.append(key, value); // This class is immutable
@@ -140,8 +161,9 @@ export class HttpService {
   }
 
   private createOptions(): any {
-    if (this.token !== undefined) {
-      this.header('Authorization', 'Bearer ' + this.token.accessToken);
+    let token = localStorage.getItem("token");
+    if (token !== undefined) {
+      this.header('Authorization', 'Bearer ' + token);
     }
     const options: any = {
       headers: this.headers,
@@ -163,7 +185,7 @@ export class HttpService {
     const contentType = response.headers.get('content-type');
     if (contentType) {
       if (contentType.indexOf('application/pdf') !== -1) {
-        const blob = new Blob([response.body], {type: 'application/pdf'});
+        const blob = new Blob([response.body], { type: 'application/pdf' });
         if (this.printDirectly) {
           const iFrame = document.createElement('iframe');
           iFrame.src = URL.createObjectURL(blob);
@@ -184,7 +206,7 @@ export class HttpService {
 
 
   private handleError(response): any {
-   console.log(response);
+    console.log(response);
     let error: Error;
     if (response.status === HttpService.UNAUTHORIZED) {
       this.snackBar.open('Unauthorized', 'Error', {
@@ -196,7 +218,7 @@ export class HttpService {
     } else {
       try {
         if (response.status === HttpService.NOT_FOUND) {
-          error = {error: 'Not Found', message: '', path: ''};
+          error = { error: 'Not Found', message: '', path: '' };
         } else {
           error = response.error; // with 'text': JSON.parse(response.error);
         }
