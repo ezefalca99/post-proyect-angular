@@ -56,8 +56,6 @@ export class HttpService {
         localStorage.setItem("token", token.accessToken);
         this.decodeToken(token.accessToken);
 
-      }), catchError(error => {
-        return this.handleError(error);
       })
     );
   }
@@ -206,7 +204,7 @@ export class HttpService {
 
 
   private handleError(response): any {
-    console.log(response);
+   
     let error: Error;
     if (response.status === HttpService.UNAUTHORIZED) {
       this.snackBar.open('Unauthorized', 'Error', {
@@ -222,9 +220,7 @@ export class HttpService {
         } else {
           error = response.error; // with 'text': JSON.parse(response.error);
         }
-        this.snackBar.open(error.error + ': ' + error.message, 'Error', {
-          duration: 5000
-        });
+        
         return throwError(error);
       } catch (e) {
         this.snackBar.open('No server response', 'Error', {

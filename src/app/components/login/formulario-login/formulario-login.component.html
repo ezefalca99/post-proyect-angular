@@ -1,6 +1,10 @@
 <form novalidate [formGroup]="loginForm" (ngSubmit)="login(loginForm)">
 
   <legend class="text-dark text-center py-2 h1">LOGIN</legend>
+
+  <div class="alert alert-danger" *ngIf="message">
+    {{message}}
+  </div>
   
   <div class="form-group">
     <label for="usernameOrEmail">Usuario o Email</label>

@@ -12,6 +12,7 @@ export class FormularioLoginComponent implements OnInit {
 
   loginForm: FormGroup;
   formTouched: boolean = false;
+  message: string;
 
   constructor(private tokensService: TokensService ,private fb: FormBuilder, private router: Router) { }
 
@@ -27,7 +28,7 @@ export class FormularioLoginComponent implements OnInit {
     
       this.tokensService.login(form.value.usernameOrEmail, form.value.password).subscribe(
         () => this.router.navigate(['']),
-        errors => console.log(errors)
+        error => this.message = "Credenciales equivocadas"
       );
     }
     this.formTouched = true;

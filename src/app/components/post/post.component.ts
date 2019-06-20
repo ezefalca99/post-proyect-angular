@@ -14,6 +14,7 @@ export class PostComponent implements OnInit {
 
   posts: Post[] = [];
   postForm: FormGroup;
+  formTouched = false;
 
   constructor(private postService: PostService, private fb: FormBuilder, private router: Router) {
   }
@@ -26,25 +27,26 @@ export class PostComponent implements OnInit {
   }
 
   getPosts() {
-    console.log("getPosts");
     this.postService.getPosts().subscribe(
       (posts: Post[]) => {
         posts.sort((a, b) => b.id - a.id);
         this.posts = posts;
-        console.log(this.posts);
       }
     );
     
   }
 
   savePost(postForm) {
+    this.formTouched = true;
+
     if (postForm.valid) {
-      this.postService.savePost({ description: postForm.value.description }).subscribe(ola => {
+      this.postService.savePost({ description: postForm.value.description }).subscribe(post => {
         this.getPosts();
-        console.log(ola);
         this.postForm.reset(); 
+        this.formTouched = false;
       });
            
     }
+    
   }
 }

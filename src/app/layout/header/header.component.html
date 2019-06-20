@@ -14,6 +14,11 @@
           <li *ngIf="!authService.logIn()" class="nav-item">
             <a class="nav-link" routerLink="login">Login</a>
           </li>
+
+          <li *ngIf="!authService.logIn()" class="nav-item">
+            <a class="nav-link" routerLink="register">Registrarse</a>
+          </li>
+
           <li *ngIf="authService.logIn()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">

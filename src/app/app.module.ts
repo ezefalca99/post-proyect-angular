@@ -15,6 +15,7 @@ import { PostComponent } from './components/post/post.component';
 
 import { LoginComponent } from './components/login/login.component';
 import { FormularioLoginComponent } from './components/login/formulario-login/formulario-login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FormularioLoginComponent } from './components/login/formulario-login/fo
     HomeComponent,
     PostComponent,
     LoginComponent,
-    FormularioLoginComponent
+    FormularioLoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

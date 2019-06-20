@@ -13,7 +13,7 @@ export class TokensService {
   }
 
   login(usernameOrPassword: string, password: string): Observable<any> {
-    return this.httpService.successful("Logueado correctamente!").login(usernameOrPassword, password, TokensService.END_POINT);
+    return this.httpService.login(usernameOrPassword, password, TokensService.END_POINT);
   }
 
   logout(): void {
